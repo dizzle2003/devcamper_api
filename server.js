@@ -4,6 +4,7 @@ const express = require('express');
 const { config } = require('dotenv');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
+const errorhandler = require('./middleware/error')
 
 //Load environment variables
 config({ path: './config/config.env' });
@@ -11,7 +12,7 @@ config({ path: './config/config.env' });
 connectDB();
 
 const app = express();
-app.use(express.json());
+app.use(express.json({extended: true}));
 const bootcamp = require('./Routes/bootcamps');
 
 if (process.env.NODE_ENV === 'development') {
@@ -19,6 +20,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(bootcamp);
+app.use(errorhandler);
 
 const PORT = process.env.PORT;
 
