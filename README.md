@@ -1,2 +1,2 @@
 # devcamper_api
-devcamper tutorial backend API that mimics the backend for a bootcamp
+Demo backend API that mimics the backend for a bootcamp

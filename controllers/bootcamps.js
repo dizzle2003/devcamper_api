@@ -1,52 +1,55 @@
 const Bootcamp = require('../models/Bootcamp');
+const ErrorResponse = require('../utils/errorResponse');
+const asyncHandler = require('../middleware/async');
 
-exports.getbootCamp = (req, res) => {
+exports.getbootCamp = asyncHandler(async (req, res, next) => {
+  const bootcamp = await Bootcamp.find();
+
   res.status(200).json({
     success: true,
-    data: 'retrieved all bootcamps'
+    count: bootcamp.length,
+    data: bootcamp,
   });
-};
-exports.getbootCampbyId = (req, res) => {
+});
+exports.getbootCampbyId = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
+
+  const bootcamp = await Bootcamp.findById(id);
+
   res.status(200).json({
     success: true,
-    data: `retrieved bootcamp with ${id}`
+    data: bootcamp,
   });
-};
-exports.createbootCamp = async (req, res) => {
-  const bootcamp = await Bootcamp.create(req.body)
-  try {
-    res.status(201).json({
-      created: true,
-      data: bootcamp,
-    })
-    }
-  catch (error) {
-    res.status(404).json({
-      created: false,
-      data: error
-    })
+});
 
-  }
-  
-};
-exports.updatebootCamp = (req, res) => {
+exports.createbootCamp = asyncHandler(async (req, res) => {
+  const bootcamp = await Bootcamp.create(req.body);
+  res.status(201).json({
+    created: true,
+    msg: `${bootcamp.name} has been created`,
+    data: bootcamp,
+  });
+});
+
+exports.updatebootCamp = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  const bootcamp = await Bootcamp.findByIdAndUpdate(id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
   res.status(302).json({
     updated: true,
-    data: `updated bootCamp with id ${id}`
+    data: `${bootcamp} with id ${id} has been updated`,
   });
-};
-exports.deletebootCamp = (req, res) => {
+});
+
+exports.deletebootCamp = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  if (id) {
-    return res.status(200).json({
-      deleted: true,
-      data: `deleted bootCamp with id ${id}`
-    });
-  }
-  return res.status(404).json({
-    deleted: false,
-    error: `no bootcamp with this ${id} exists`
+  await Bootcamp.findByIdAndDelete(id);
+
+  res.status(200).json({
+    deleted: true,
+    data: `bootcamp with id ${id} has been deleted`,
   });
-};
+});
