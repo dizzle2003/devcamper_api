@@ -1,6 +1,7 @@
 const Bootcamp = require('../models/Bootcamp');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
+const geocoder = require('../utils/geocoder');
 
 exports.getbootCamp = asyncHandler(async (req, res, next) => {
   const bootcamp = await Bootcamp.find();
@@ -52,4 +53,16 @@ exports.deletebootCamp = asyncHandler(async (req, res) => {
     deleted: true,
     data: `bootcamp with id ${id} has been deleted`,
   });
+});
+
+exports.getbootCampbyRadius = asyncHandler(async (req, res) => {
+  const { distance, zipcode, state  } = req.params;
+  
+  //Get latitude and longitude from geocoder
+	await Bootcamp.findByIdAndDelete(id);
+
+	res.status(200).json({
+		deleted: true,
+		data: `bootcamp with id ${id} has been deleted`,
+	});
 });
