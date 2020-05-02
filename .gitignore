@@ -4,3 +4,4 @@ config/
 _data/
 test/
 .vscode/
+map.js
