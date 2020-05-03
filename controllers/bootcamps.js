@@ -4,8 +4,7 @@ const asyncHandler = require('../middleware/async');
 const geocoder = require('../utils/geocoder');
 
 exports.getbootCamp = asyncHandler(async (req, res, next) => {
-	if(req.query){
-		
+	if (req.query) {
 		//Create Operators/modifiers for query searches in MongoDB
 		const queryString = JSON.stringify(req.query).replace(
 			/\b(gt|gte|lt|lte|in)\b/g,
@@ -19,7 +18,6 @@ exports.getbootCamp = asyncHandler(async (req, res, next) => {
 			count: bootcamp.length,
 			data: bootcamp,
 		});
-
 	}
 	const bootcamp = await Bootcamp.find();
 
@@ -28,10 +26,6 @@ exports.getbootCamp = asyncHandler(async (req, res, next) => {
 		count: bootcamp.length,
 		data: bootcamp,
 	});
-});
-
-exports.getbootCampbyQuery = asyncHandler(async (req, res, next) => {
-	
 });
 
 exports.getbootCampbyId = asyncHandler(async (req, res, next) => {
