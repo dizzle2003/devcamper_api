@@ -4,24 +4,38 @@ const asyncHandler = require('../middleware/async');
 const geocoder = require('../utils/geocoder');
 
 exports.getbootCamp = asyncHandler(async (req, res, next) => {
-	if (req.query) {
-		//Create Operators/modifiers for query searches in MongoDB
-		const queryString = JSON.stringify(req.query).replace(
-			/\b(gt|gte|lt|lte|in)\b/g,
-			(match) => `$${match}`,
-		);
-		const query = JSON.parse(queryString);
-		const bootcamp = await Bootcamp.find(query);
+	//Declare query to allow for multiple definitions based on search parameters
+	let query;
 
-		return res.status(200).json({
-			success: true,
-			count: bootcamp.length,
-			data: bootcamp,
-		});
+	//Copy of req.query
+	const reqQuery = { ...req.query };
+
+	//Fields to exclude
+	const removeFields = ['select'];
+
+	//Loop to remove the 'select' param from the removeFields array
+	removeFields.forEach((param) => delete reqQuery[param]);
+	//
+
+	//Create Operators/modifiers for gt, gte, lt, lte and in query searches
+	const queryString = JSON.stringify(reqQuery).replace(
+		/\b(gt|gte|lt|lte|in)\b/g,
+		(match) => `$${match}`,
+	);
+
+	//Retrieve Query Resource with queryString
+	query = Bootcamp.find(JSON.parse(queryString));
+
+
+	//Retrieve select fields
+	if (req.query.select) {
+		const fields = req.query.select.split(',').join(' ');
+		query = query.select(fields);
 	}
-	const bootcamp = await Bootcamp.find();
 
-	res.status(200).json({
+	//Finding resource
+	const bootcamp = await query;
+	return res.status(200).json({
 		success: true,
 		count: bootcamp.length,
 		data: bootcamp,
@@ -57,7 +71,8 @@ exports.updatebootCamp = asyncHandler(async (req, res) => {
 
 	res.status(302).json({
 		updated: true,
-		data: `${bootcamp} with id ${id} has been updated`,
+		msg: `${bootcamp} with id ${id} has been updated`,
+		data: bootcamp
 	});
 });
 
