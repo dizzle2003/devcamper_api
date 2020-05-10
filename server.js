@@ -1,17 +1,22 @@
 'use strict';
 
 const express = require('express');
+const app = express();
 const { config } = require('dotenv');
+//Logger for development purposes
 const morgan = require('morgan');
+//Connection to db imported from config files
 const connectDB = require('./config/db');
+//Error handling import for better error message declaration
 const errorhandler = require('./middleware/error');
 
 //Load environment variables
 config({ path: './config/config.env' });
 
+//Invoking DB connection
 connectDB();
 
-const app = express();
+
 app.use(express.json({ extended: true }));
 const bootcamp = require('./Routes/bootcamps');
 
