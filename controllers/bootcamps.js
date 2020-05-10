@@ -11,7 +11,7 @@ exports.getbootCamp = asyncHandler(async (req, res, next) => {
 	const reqQuery = { ...req.query };
 
 	//Fields to exclude
-	const removeFields = ['select'];
+	const removeFields = ['select', 'sort'];
 
 	//Loop to remove the 'select' param from the removeFields array
 	removeFields.forEach((param) => delete reqQuery[param]);
@@ -26,11 +26,18 @@ exports.getbootCamp = asyncHandler(async (req, res, next) => {
 	//Retrieve Query Resource with queryString
 	query = Bootcamp.find(JSON.parse(queryString));
 
-
 	//Retrieve select fields
 	if (req.query.select) {
 		const fields = req.query.select.split(',').join(' ');
 		query = query.select(fields);
+	}
+
+	//Retrieve sorted information
+	if (req.query.sort) {
+		const sortCriteria = req.query.sort.split(',').join(' ');
+		this.query = query.sort(sortCriteria);
+	} else {
+		query.sort('-createdAt');
 	}
 
 	//Finding resource
@@ -72,7 +79,7 @@ exports.updatebootCamp = asyncHandler(async (req, res) => {
 	res.status(302).json({
 		updated: true,
 		msg: `${bootcamp} with id ${id} has been updated`,
-		data: bootcamp
+		data: bootcamp,
 	});
 });
 
