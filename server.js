@@ -18,13 +18,17 @@ connectDB();
 
 
 app.use(express.json({ extended: true }));
-const bootcamp = require('./Routes/bootcamps');
+app.use(express.urlencoded({ extended: true}));
+
+const bootcamp = require('./routes/bootcamps');
+const course = require('./routes/courses');
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
 app.use(bootcamp);
+app.use(course);
 app.use(errorhandler);
 
 

@@ -13,7 +13,7 @@ exports.getbootCamp = asyncHandler(async (req, res, next) => {
 	//Fields to exclude
 	const removeFields = ['select', 'sort', 'page', 'limit'];
 
-	//Loop to remove the 'select' param from the removeFields array
+	//Loop to remove the 'select and any other' param from the removeFields array
 	removeFields.forEach((param) => delete reqQuery[param]);
 
 	//Create Operators/modifiers for gt, gte, lt, lte and in query searches
