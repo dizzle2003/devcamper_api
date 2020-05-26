@@ -18,6 +18,8 @@ connectDB();
 
 
 app.use(express.json({ extended: true }));
+app.use(express.urlencoded({ extended: true}));
+
 const bootcamp = require('./Routes/bootcamps');
 
 if (process.env.NODE_ENV === 'development') {
