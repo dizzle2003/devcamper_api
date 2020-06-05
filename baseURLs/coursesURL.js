@@ -1,3 +1,3 @@
-const baseURL = '/api/v1/courses';
+const baseURL = '/api/v1/courses'
 
 module.exports = baseURL;
