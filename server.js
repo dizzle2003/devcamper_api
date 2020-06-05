@@ -9,6 +9,7 @@ const morgan = require('morgan');
 const connectDB = require('./config/db');
 //Error handling import for better error message declaration
 const errorhandler = require('./middleware/error');
+const colors = require('colors');
 
 //Load environment variables
 config({ path: './config/config.env' });
@@ -36,7 +37,7 @@ const PORT = process.env.PORT || 7000;
 
 const server = app.listen(PORT, () => {
   console.log(
-    `Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`
+    `Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
   );
 });
 
