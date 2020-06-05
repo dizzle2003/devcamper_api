@@ -8,11 +8,11 @@ const asyncHandler = require('../middleware/async');
 //@access public
 
 exports.allCourses = asyncHandler(async (req, res) => {
-    let query;
-  
+	let query;
+	const { bootcampId } = req.params;
 
-	if (req.params.bootcampId) {
-		query = await courses.find({ bootcamp: req.params.bootcampId });
+	if (bootcampId) {
+		query = await courses.find({ bootcamp: bootcampId });
 	} else {
 		query = await courses.find();
 	}
