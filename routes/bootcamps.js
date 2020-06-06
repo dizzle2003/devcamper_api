@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const courseRouter = require('../routes/courses');
-const base_url = require('../baseURLs/bootcampURL');
+const base_url = require('../baseURLs/bootcamps');
 const {
 	getbootCamp,
 	getbootCampbyId,
