@@ -14,7 +14,7 @@ exports.getbootCamp = asyncHandler(async (req, res, next) => {
 	//Fields to exclude
 	const removeFields = ['select', 'sort', 'page', 'limit'];
 
-	//Loop to remove the 'select' param from the removeFields array
+	//Loop to remove the 'select and any other' param from the removeFields array
 	removeFields.forEach((param) => delete reqQuery[param]);
 
 	//Create Operators/modifiers for gt, gte, lt, lte and in query searches
@@ -24,7 +24,10 @@ exports.getbootCamp = asyncHandler(async (req, res, next) => {
 	);
 
 	//Retrieve Query Resource with queryString
-	query = Bootcamp.find(JSON.parse(queryString));
+	query = Bootcamp.find(JSON.parse(queryString)).populate({
+		path: 'courses',
+		select: 'title description',
+	});
 
 	//Retrieve select fields
 	if (req.query.select) {
@@ -90,6 +93,9 @@ exports.getbootCampbyId = asyncHandler(async (req, res, next) => {
 
 exports.createbootCamp = asyncHandler(async (req, res) => {
 	const bootcamp = await Bootcamp.create(req.body);
+	if(!bootcamp){
+		return next(new ErrorResponse(`Error creating bootcamp`), 404)
+	}
 	res.status(201).json({
 		created: true,
 		msg: `${bootcamp.name} has been created`,
@@ -111,13 +117,23 @@ exports.updatebootCamp = asyncHandler(async (req, res) => {
 	});
 });
 
-exports.deletebootCamp = asyncHandler(async (req, res) => {
+exports.deletebootCamp = asyncHandler(async (req, res, next) => {
 	const { id } = req.params;
-	await Bootcamp.findByIdAndDelete(id);
+	const bootcamp = await Bootcamp.findById(id);
+
+	if (!bootcamp) {
+		return next(
+			new ErrorResponse(`Bootcamp with ${id} not found`, 404)
+			);
+	}
+
+	//Remove method created from Bootcamp model middleware
+	Bootcamp.remove();
 
 	res.status(200).json({
 		deleted: true,
-		data: `bootcamp with id ${id} has been deleted`,
+		msg: `bootcamp with id ${id} has been deleted`,
+		data: {}
 	});
 });
 

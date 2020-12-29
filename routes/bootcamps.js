@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const base_url = require('../baseURLs/bootcampURL');
+const courseRouter = require('../routes/courses');
+const base_url = require('../baseURLs/bootcamps');
 const {
 	getbootCamp,
 	getbootCampbyId,
@@ -9,6 +10,9 @@ const {
 	deletebootCamp,
 	getbootCampbyRadius,
 } = require('../controllers/bootcamps');
+
+//Re-route into other resource routers
+router.use(`${base_url}/:bootcampId/courses`, courseRouter);
 
 router.route(base_url).get(getbootCamp).post(createbootCamp);
 
