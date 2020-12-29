@@ -41,11 +41,7 @@ const deleteData = async function () {
 	try {
 		await bootcamp.deleteMany();
 		await course.deleteMany();
-<<<<<<< HEAD
-		console.log(`Data deleted successfully` .red.inverse);
-=======
 		console.log(`Data deleted successfully`);
->>>>>>> c0c4a0a629380cae016f8e45d524dfbf3cab6654
 	} catch (error) {
 		console.log(error);
 	}
