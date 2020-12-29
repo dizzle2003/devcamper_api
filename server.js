@@ -28,6 +28,7 @@ app.use(bootcamp);
 app.use(errorhandler);
 
 
+
 const PORT = process.env.PORT || 7000;
 
 const server = app.listen(PORT, () => {
@@ -38,6 +39,6 @@ const server = app.listen(PORT, () => {
 
 //Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
-  console.log(`Error: ${err}`);
+  console.log(`Error: ${err.message}`);
   server.close(() => process.exit(1));
 });

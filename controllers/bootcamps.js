@@ -6,9 +6,10 @@ const geocoder = require('../utils/geocoder');
 exports.getbootCamp = asyncHandler(async (req, res, next) => {
 	//Declare query to allow for multiple definitions based on search parameters
 	let query;
-
+	
 	//Copy of req.query
 	const reqQuery = { ...req.query };
+	
 
 	//Fields to exclude
 	const removeFields = ['select', 'sort', 'page', 'limit'];
