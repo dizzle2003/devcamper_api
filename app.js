@@ -3,6 +3,7 @@
 const express = require('express');
 const app = express();
 const { config } = require('dotenv');
+const cors = require('cors');
 //Logger for development purposes
 const morgan = require('morgan');
 //Connection to db imported from config files
@@ -17,9 +18,10 @@ config({ path: './config/config.env' });
 //Invoking DB connection
 connectDB();
 
-
+app.use(cors());
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true}));
+
 
 const bootcamp = require('./routes/bootcamps');
 const course = require('./routes/courses');
