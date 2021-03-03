@@ -20,7 +20,7 @@
     "slugify": "^1.4.5"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
+    "chai": "^4.3.1",
     "colors": "^1.4.0",
     "mocha": "^8.3.0",
     "nodemon": "^2.0.4"
